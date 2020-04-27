@@ -1,0 +1,14 @@
+name: MuffinUpdater
+description: A plugin that updates other plugins written by JohnyMuffin
+website: johnymuffin.com
+main: com.johnymuffin.beta.updater.MuffinUpdater
+author: JohnyMuffin
+version: 1.0.3
+commands:
+  muffinupdater:
+    description: Fetch any plugin updates that may have occured since server restart
+    usage: /<command>
+permissions:
+  muffinupdater.update:
+    description: Gives access to the manual updater command
+    default: op
