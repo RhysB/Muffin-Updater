@@ -3,7 +3,7 @@ description: A plugin that updates other plugins written by JohnyMuffin
 website: johnymuffin.com
 main: com.johnymuffin.beta.updater.MuffinUpdater
 author: JohnyMuffin
-version: 1.0.3
+version: 1.0.4
 commands:
   muffinupdater:
     description: Fetch any plugin updates that may have occured since server restart

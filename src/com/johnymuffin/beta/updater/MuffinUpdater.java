@@ -32,9 +32,6 @@ public class MuffinUpdater extends JavaPlugin {
         pluginName = pdf.getName();
         log.info("[" + pluginName + "] Is Loading, Version: " + pdf.getVersion());
 
-        if (Bukkit.getName().equalsIgnoreCase("Project Poseidon Craftbukkit") || Bukkit.getName().equalsIgnoreCase("Project Poseidon")) {
-            //Server is running Project Poseidon
-        }
         muffinUpdaterConfig = new MuffinUpdaterConfig(plugin);
         debug = muffinUpdaterConfig.isDebugModeEnabled();
         this.getCommand("muffinupdater").setExecutor(new MuffinUpdaterCommand(plugin));
@@ -42,11 +39,12 @@ public class MuffinUpdater extends JavaPlugin {
 
         jsonManifest = getManifest(plugin, "https://api.johnymuffin.com/updater/manifest.json", false);
         if (jsonManifest == null) {
-            Bukkit.getPluginManager().disablePlugin(plugin);
+            Bukkit.getServer().getPluginManager().disablePlugin(this);
+            return;
         }
         logInfo(Level.INFO, "Fetched update manifest successfully");
         //Ensure function runs after server loading
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             scanPlugins();
             muffinUpdaterConfig.saveConfig();
         }, 0);
@@ -56,6 +54,7 @@ public class MuffinUpdater extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        logInfo(Level.INFO, "Disabling");
         if (jsonManifest == null) {
             return;
         }
@@ -69,7 +68,7 @@ public class MuffinUpdater extends JavaPlugin {
 
     private void scanPlugins() {
         //Loop through all plugins
-        for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
+        for (Plugin p : Bukkit.getServer().getPluginManager().getPlugins()) {
             //Check if plugin is in manifest
             for (int i = 0; i < jsonManifest.size(); i++) {
                 JSONObject tmp = (JSONObject) jsonManifest.get(i);
